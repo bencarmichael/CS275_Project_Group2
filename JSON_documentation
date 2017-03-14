@@ -1,0 +1,92 @@
+--SearchRecipe Request JSON
+{
+	"recipeSearch":{
+		"searchIDs":[
+			4,
+			22,
+			14
+		] 
+	}
+}
+
+
+--SearchRecipe Response JSON
+{
+	"recipeResults":[
+		“12”:{
+			"name":"tacos",
+			"description":"A yummy Mexican dish",
+			"instructions":"Cook the tacos, they're good.",
+			"ingredientIDs":[
+				50,
+				34,
+				12
+			]
+		},
+                       “20”:{
+			"name":"burgers",
+			"description":"An American classic",
+			"instructions":"Cook the burgers, yum.",
+			"ingredientIDs":[
+				10,
+				5
+			]
+		}
+	]
+}
+
+--SubmitRecipe Request JSON
+{
+	"recipeSubmission":{
+		"name":"Cheeseburger",
+		"description":"blah blah",
+		"instructions":"blah blah",
+		"ingredients":[
+			10,
+			5
+		]
+	}
+}
+
+--SubmitRecipe Response JSON
+{
+	"recipeSubmissionResponse":{
+		"status":"success",
+		"name":"Cheeseburger",
+		"id":92
+	}
+}
+
+--SearchIngredient Request JSON
+{
+	"ingredientSearch":{
+		"searchString":"rice"
+	}
+}
+
+--SearchIngredient Response JSON
+{
+	"ingredientResults":[
+		"9":"White Rice",
+		"15":"Brown Rice",
+		"82":"Fried Rice"
+	]
+}
+
+--SubmitIngredient Request JSON
+{
+	"ingredientSubmission":{
+		"name":"Mozzarella Cheese"
+	}
+}
+
+--SubmitIngredient Response JSON
+{
+	"ingredientSubmissionResponse":{
+		"status":"success"
+		"name":"Mozzarella Cheese",
+		"id":54
+	}
+}
+
+

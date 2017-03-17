@@ -4,7 +4,6 @@ var fs = require('fs')
 var app = express();
 var bodyparser = require("body-parser");
 var mysql = require("mysql");
-
 app.use(express.static("."));
 var config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 app.use(bodyparser.urlencoded({extended:false}));
@@ -27,7 +26,7 @@ con.connect(function(err)	{
 	}
 });
 
-app.post('/SearchRecipe', function(req,res){
+app.post('/recipeSearch', function(req,res){
 	//Search for a recepie within the table recipe
 	// input is a json of searchIDs numbers
 	//  inputQuery is creating 
@@ -70,7 +69,7 @@ app.post('/SearchRecipe', function(req,res){
 		});
 });
 
-app.get('/SearchIngredient', function(req,res){
+app.get('/ingredientSearch', function(req,res){
 	var ingredient = req.query.ingredientSearch.searchString;
 	var sql = "SELECT * FROM ingredient WHERE name LIKE \'%" + ingredient + "%\'";
 	con.query(sql,
@@ -83,7 +82,7 @@ app.get('/SearchIngredient', function(req,res){
 		});
 });
 
-app.post('/SubmitIngredient', function(req,res){
+app.post('/ingredientSubmission', function(req,res){
 	var ingredient = req.body.ingredientSubmission.name;
 	var sql = "INSERT INTO ingredient (name) VALUES (\'" + ingredient + "\')";
 	con.query(sql,
@@ -97,7 +96,7 @@ app.post('/SubmitIngredient', function(req,res){
 	res.send("OK");
 });
 
-app.post('/SubmitRecipe', function(req,res){
+app.post('/recipeSubmission', function(req,res){
 	// Assuming IDs are correct 
 	var name = req.body.recipeSubmission.name;
 	var desc = req.body.recipeSubmission.description;
@@ -131,6 +130,6 @@ app.get('/FindIngredientByID', function(req, res){
 		});
 
 });
-app.listen(8080, function(){
+app.listen(8888, function(){
 	console.log('Server Running. . .')
 });

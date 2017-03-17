@@ -37,7 +37,7 @@ app.post('/recipeSearch', function(req,res){
 		if (i != Object.keys(req.body.searchIDs) - 1) inputQuery += ",";
 	}
 
-var sql = "SELECT Recipe.name AS 'Recipe', COUNT(Ingredient.name) AS 'Ingredients Used', 'Total Ingredients' - COUNT(Ingredient.name) AS 'Ingredients Needed' FROM Recipe JOIN RecipeIngredient ON Recipe.id = RecipeIngredient.recipe_id JOIN Ingredient ON Ingredient.id = RecipeIngredient.ingredient_id JOIN (SELECT (RecipeIngredient.recipe_id), COUNT(RecipeIngredient.ingredient_id) AS 'Total Ingredients'    FROM ingredient JOIN recipeingredient ON RecipeIngredient.ingredient_id = ingredient.id GROUP BY recipeingredient.recipe_id ORDER BY recipeingredient.recipe_id ASC) AS SUB_SELECT USING (recipe_id)WHERE Ingredient.id IN (  "+inputQuery+"  )GROUP BY Recipe.name ORDER BY COUNT(Ingredient.name) DESC , Recipe.name ASC";
+var sql = "SELECT Recipe.name AS 'Recipe', COUNT(Ingredient.name) AS 'Ingredients Used', 'Total Ingredients' - COUNT(Ingredient.name) AS 'Ingredients Needed' FROM Recipe JOIN RecipeIngredient ON Recipe.id = RecipeIngredient.recipe_id JOIN Ingredient ON Ingredient.id = RecipeIngredient.ingredient_id JOIN (SELECT (RecipeIngredient.recipe_id), COUNT(RecipeIngredient.ingredient_id) AS 'Total Ingredients'    FROM ingredient JOIN recipeingredient ON RecipeIngredient.ingredient_id = ingredient.id GROUP BY recipeingredient.recipe_id ORDER BY recipeingredient.recipe_id ASC) AS SUB_SELECT USING (recipe_id)WHERE Ingredient.id IN (  "+mysql.escape(inputQuery)+"  )GROUP BY Recipe.name ORDER BY COUNT(Ingredient.name) DESC , Recipe.name ASC";
 
 	con.query(sql,
 		function(err, rows, fields)	{
@@ -49,6 +49,10 @@ var sql = "SELECT Recipe.name AS 'Recipe', COUNT(Ingredient.name) AS 'Ingredient
 		});
 });
 
+/*
+ * Endpoint: ingredientSearch?=search
+ * 
+ */
 app.get('/ingredientSearch', function(req,res){
 	var ingredient = req.query.ingredientSearch.searchString;
 	var sql = "SELECT * FROM ingredient WHERE name LIKE \'%" + ingredient + "%\'";
@@ -64,7 +68,7 @@ app.get('/ingredientSearch', function(req,res){
 
 app.post('/ingredientSubmission', function(req,res){
 	var ingredient = req.body.ingredientSubmission.name;
-	var sql = "INSERT INTO ingredient (name) VALUES (\'" + ingredient + "\')";
+	var sql = "INSERT INTO ingredient (name) VALUES (\'" + mysql.escape(ingredient) + "\')";
 	con.query(sql,
 		function(err, rows, fields)	{
 			if (err)
@@ -82,7 +86,7 @@ app.post('/recipeSubmission', function(req,res){
 	var desc = req.body.recipeSubmission.description;
 	var instr = req.body.recipeSubmission.instructions;
 	var ingredients = req.body.recipeSubmission.ingredients;
-	var sql = "INSERT INTO recipe (name) VALUES (\'" + ingredient + "\')";
+	var sql = "INSERT INTO recipe (name) VALUES (\'" + mysql.escape(ingredient) + "\')";
 	con.query(sql,
 		function(err, rows, fields)	{
 			if (err)
@@ -95,12 +99,12 @@ app.post('/recipeSubmission', function(req,res){
 });
 
 /*
- * Endpoint: FindIngredientByID?id="2"
+ * Endpoint: FindIngredientByID?id=2
  * Response: {"name": "salt"}
  */
 app.get('/FindIngredientByID', function(req, res){
 	var ID = req.param("id");
-	var sql = "SELECT name FROM ingredient WHERE id =" + ID;
+	var sql = "SELECT name FROM ingredient WHERE id =" + mysql.escape(ID);
 	con.query(sql,
 		function(err, rows, fields)	{
 			if (err){
@@ -121,7 +125,7 @@ app.get('/FindIngredientByID', function(req, res){
 
 app.get('/FindRecipeByID', function(req, res){
 	var ID = req.param("id");
-	var sql = "SELECT name FROM recipe WHERE id =" + ID;
+	var sql = "SELECT name FROM recipe WHERE id =" + mysql.escape(ID);
 	con.query(sql,
 		function(err, rows, fields)	{
 			if (err){

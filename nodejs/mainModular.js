@@ -1,25 +1,29 @@
 var express = require('express');
+var mysql = require('mysql');
+var fs = require('fs')
 var app = express();
 var bodyparser = require("body-parser");
 var mysql = require("mysql");
 
 app.use(express.static("."));
+var config = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 app.use(bodyparser.urlencoded({extended:false}));
 app.use(bodyparser.json());
 
 var con = mysql.createConnection({
-	host:	'localhost',
-	user: 'root',
-	password:	'password',
-	database:	'cookbook'
+	host: config.host,
+	user: config.user,
+	password: config.password,
+	database: config.database
 });
 
 con.connect(function(err)	{
 	if (err)	{
 		console.log("Error connecting to database");
+		console.log(err);
 	}
 	else	{
-		console.log("Databse successfully connected");
+		console.log("Database successfully connected");
 	}
 });
 
@@ -125,7 +129,8 @@ app.get('/FindIngredientByID', function(req, res){
 					res.send("404");
 				}
 		});
+
 });
 app.listen(8080, function(){
-	console.log('Server Running port: 8080. . .')
+	console.log('Server Running. . .')
 });

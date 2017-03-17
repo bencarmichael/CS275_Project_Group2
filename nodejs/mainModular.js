@@ -1,6 +1,12 @@
 var express = require('express');
 var app = express();
+var bodyparser = require("body-parser");
+var mysql = require("mysql");
+
 app.use(express.static("."));
+app.use(bodyparser.urlencoded({extended:false}));
+app.use(bodyparser.json());
+
 var con = mysql.createConnection({
 	host:	'localhost',
 	user: 'root',
@@ -22,10 +28,10 @@ app.post('/SearchRecipe', function(req,res){
 	// input is a json of searchIDs numbers
 	//  inputQuery is creating 
 	var inputQuery;
-	for (var i = 0; i < Object.keys(req.query.recipeSearch.searchIDs); i++)
+	for (var i = 0; i < Object.keys(req.body.recipeSearch.searchIDs); i++)
 	{
-		inputQuery += "\'" + req.query.searchIDs[i] + "\'";
-		if (i != Object.keys(req.query.searchIDs) - 1) inputQuery += ",";
+		inputQuery += "\'" + req.body.searchIDs[i] + "\'";
+		if (i != Object.keys(req.body.searchIDs) - 1) inputQuery += ",";
 	}
 	var sql ="SELECT" +
     "Recipe.name AS \'Recipe\'," +
@@ -74,7 +80,7 @@ app.get('/SearchIngredient', function(req,res){
 });
 
 app.post('/SubmitIngredient', function(req,res){
-	var ingredient = req.query.ingredientSubmission.name;
+	var ingredient = req.body.ingredientSubmission.name;
 	var sql = "INSERT INTO ingredient (name) VALUES (\'" + ingredient + "\')";
 	con.query(sql,
 		function(err, rows, fields)	{
@@ -89,10 +95,10 @@ app.post('/SubmitIngredient', function(req,res){
 
 app.post('/SubmitRecipe', function(req,res){
 	// Assuming IDs are correct 
-	var name = req.query.recipeSubmission.name;
-	var desc = req.query.recipeSubmission.description;
-	var instr = req.query.recipeSubmission.instructions;
-	var ingredients = req.query.recipeSubmission.ingredients;
+	var name = req.body.recipeSubmission.name;
+	var desc = req.body.recipeSubmission.description;
+	var instr = req.body.recipeSubmission.instructions;
+	var ingredients = req.body.recipeSubmission.ingredients;
 	var sql = "INSERT INTO recipe (name) VALUES (\'" + ingredient + "\')";
 	con.query(sql,
 		function(err, rows, fields)	{
@@ -119,8 +125,6 @@ app.get('/FindIngredientByID', function(req, res){
 					res.send("404");
 				}
 		});
-	
-	
 });
 app.listen(8080, function(){
 	console.log('Server Running. . .')

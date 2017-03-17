@@ -128,8 +128,24 @@ app.get('/FindIngredientByID', function(req, res){
 					res.send("404");
 				}
 		});
-
 });
+
+app.get('/FindRecipeByID', function(req, res){
+	var ID = req.param("id");
+	var sql = "SELECT name FROM recipe WHERE id =" + ID;
+	con.query(sql,
+		function(err, rows, fields)	{
+			if (err)
+				console.log('Error during query processing');
+			else
+				console.log('Rows is  ', rows);
+				if (Object.keys(rows).length == 0)
+				{
+					res.send("404");
+				}
+		});
+});
+
 app.listen(8080, function(){
 	console.log('Server Running. . .')
 });

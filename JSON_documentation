@@ -87,11 +87,11 @@ GET Request
 
 --ingredientSearch Response JSON
 {
-	"ingredientResults":[
+	"ingredientResults":{
 		"9":"White Rice",
 		"15":"Brown Rice",
 		"82":"Fried Rice"
-	]
+	}
 }
 
 POST Request
@@ -105,7 +105,7 @@ POST Request
 --ingredientSubmission Response JSON
 {
 	"ingredientSubmissionResponse":{
-		"status":"success"
+		"status":"success",
 		"name":"Mozzarella Cheese",
 		"id":54
 	}

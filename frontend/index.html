@@ -3,11 +3,36 @@
         <title>Search Page</title> 
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <style>
+.margin-right{
+    margin-right: 5px;
+}
 .padding-right{
     padding-right: 5px;
 }
 .padding-left{
     padding-left: 5px;
+}
+.padding-bottom{
+    padding-bottom: 5px;
+}
+.padding-bottom-sm{
+    padding-top: 2px;
+}
+.padding-top{
+    padding-top: 5px;
+}
+.padding-top-sm{
+    padding-top: 2px;
+}
+.btn-look:hover{
+    color: #333 ;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+.btn-look:active{
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px rgba(0,0,0,.125);
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
 }
         </style>
     </head>
@@ -18,11 +43,18 @@
                 <div class="col-md-6 col-sm-12">
                     <h1>Recipe Finder</h1>
                     <div class="form-group has-feedback">
-                        <input type="text" class="form-control" placeholder="search for ingredients">
+                        <input id="search-form" type="text" class="form-control " placeholder="search for ingredients">
                         <span class="form-control-feedback glyphicon glyphicon-search"></span>
-                        <span class="label label-default">Hamburger Bread <span class="glyphicon glyphicon-remove"></span></span>
-                        <span class="label label-default">Ground Beef <span class="glyphicon glyphicon-remove"></span></span>
-                        <span class="label label-default">Lettuce <span class="glyphicon glyphicon-remove"></span></span>
+                        <div id="picked-ingredients"class="padding-top padding-bottom margin-right">
+                        <span server-id="5" name="Hamburger Bread"class="label label-default picked-ingredient">Hamburger Bread <span class="glyphicon glyphicon-remove"></span></span>
+                        <span server-id="5" name="Hamburger Bread"class="label label-default picked-ingredient">Hamburger Bread <span class="glyphicon glyphicon-remove"></span></span>
+                        <span server-id="5" name="Hamburger Bread"class="label label-default picked-ingredient">Hamburger Bread <span class="glyphicon glyphicon-remove"></span></span>
+                        </div>
+                    <ul id="ingredient-search-result" class="list-group padding-top">
+                        <li server-id="6" name="Lettuce" class="list-group-item btn-look searched-ingredient">Lettuce <span class="glyphicon glyphicon-plus"></span></li>
+                        <li server-id="7" name="Leggumes" class="list-group-item btn-look searched-ingredient">Leggumes <span class="glyphicon glyphicon-plus"</li>
+                        <li class="list-group-item btn-look"><span id="new-ingredient"></span><span id="new-ingredient-error" class="label label-danger hidden">Ingredient Already Exists</span> <span class="glyphicon glyphicon-pencil"></span></li>
+                    </ul>
                     </div>
                 </div>
             </div>
@@ -50,10 +82,12 @@
                             <span class="label label-warning padding-right">Black Beans</span>
                         </div>
                     </div>
+                    <button class="btn btn-primary">Add New Recipe <span class="glyphicon glyphicon glyphicon-chevron-right"></span></button>
                 </div>
             </div>
         </div>
         <script src="./js/jquery-3.1.1.min.js"></script>
         <script src="./js/bootstrap.min.js"></script>
+        <script src="./js/main.js"></script>
     </body>
 </html>

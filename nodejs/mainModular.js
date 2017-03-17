@@ -5,7 +5,7 @@ var con = mysql.createConnection({
 	host:	'localhost',
 	user: 'root',
 	password:	'8907',
-	database:	'PROJECT'
+	database:	'cookbook'
 });
 
 con.connect(function(err)	{
@@ -17,10 +17,10 @@ con.connect(function(err)	{
 	}
 });
 
-app.get('/recipeSearch', function(req,res){
+app.post('/SearchRecipe', function(req,res){
 	//Search for a recepie within the table recipe
 	// input is a json of searchIDs numbers
-	// input is euq
+	//  inputQuery is creating 
 	var inputQuery;
 	for (var i = 0; i < Object.keys(req.query.recipeSearch.searchIDs); i++)
 	{
@@ -49,7 +49,7 @@ app.get('/recipeSearch', function(req,res){
 "WHERE"+
     "Ingredient.id IN (" + inputQuery + ")"+
 "GROUP BY Recipe.name" +
-"ORDER BY COUNT(Ingredient.name) DESC , Recipe.name ASC";
+"ORDER BY COUNT(Ingredient.name) DESC , Recipe.name ASC"
 	con.query(sql,
 		function(err, rows, fields)	{
 			if (err)
@@ -60,7 +60,7 @@ app.get('/recipeSearch', function(req,res){
 		});
 });
 
-app.get('/ingredientSearch', function(req,res){
+app.get('/SearchIngredient', function(req,res){
 	var ingredient = req.query.ingredientSearch.searchString;
 	var sql = "SELECT * FROM ingredient WHERE name LIKE \'%" + ingredient + "%\'";
 	con.query(sql,
@@ -73,8 +73,8 @@ app.get('/ingredientSearch', function(req,res){
 		});
 });
 
-app.post('/ingredientSubmission', function(req,res){
-	var n = parseInt(req.query.input);
+app.post('/SubmitIngredient', function(req,res){
+	var ingredient = req.query.ingredientSubmission.name;
 	var sql = "INSERT INTO ingredient (name) VALUES (\'" + ingredient + "\')";
 	con.query(sql,
 		function(err, rows, fields)	{
@@ -87,14 +87,41 @@ app.post('/ingredientSubmission', function(req,res){
 	res.send("OK");
 });
 
-app.post('/recipeSubmission', function(req,res){
+app.post('/SubmitRecipe', function(req,res){
+	// Assuming IDs are correct 
 	var name = req.query.recipeSubmission.name;
 	var desc = req.query.recipeSubmission.description;
 	var instr = req.query.recipeSubmission.instructions;
 	var ingredients = req.query.recipeSubmission.ingredients;
-	res.send("OK");
+	var sql = "INSERT INTO recipe (name) VALUES (\'" + ingredient + "\')";
+	con.query(sql,
+		function(err, rows, fields)	{
+			if (err)
+				console.log('Error during query processing');
+			else
+				console.log('Rows is  ', rows);
+				res.send(rows);
+		});
+	res.send("200");
 });
 
+app.get('/FindIngredientByID', function(req, res){
+	var ID = req.param("id");
+	var sql = "SELECT id FROM ingredient WHERE id =" + ID;
+	con.query(sql,
+		function(err, rows, fields)	{
+			if (err)
+				console.log('Error during query processing');
+			else
+				console.log('Rows is  ', rows);
+				if (Object.keys(rows).length == 0)
+				{
+					res.send("404");
+				}
+		});
+	
+	
+});
 app.listen(8080, function(){
 	console.log('Server Running. . .')
 });

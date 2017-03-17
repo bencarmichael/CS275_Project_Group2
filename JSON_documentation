@@ -12,27 +12,50 @@ POST Request
 
 --recipeSearch Response JSON
 {
-	"recipeResults":[
-		“12”:{
+	"recipeResults":{
+		"12":{
 			"name":"tacos",
-			"description":"A yummy Mexican dish",
-			"instructions":"Cook the tacos, they're good.",
-			"ingredientIDs":[
-				50,
-				34,
-				12
-			]
+			"ingredients":{
+				"10":{
+					"name":"xyz",
+					"used":"true"
+				},
+				"12":{
+					"name":"xyz",
+					"used":"false"
+				}
+			}
 		},
-		“20”:{
+		"20":{
 			"name":"burgers",
-			"description":"An American classic",
-			"instructions":"Cook the burgers, yum.",
-			"ingredientIDs":[
-				10,
-				5
-			]
+			"ingredients":{
+				"10":{
+					"name":"xyz",
+					"used":"true"
+				},
+				"12":{
+					"name":"xyz",
+					"used":"false"
+				}
+			}
 		}
-	]
+	}
+}
+
+GET Request
+--getRecipe Request URL
+/getRecipe?id=10
+{
+	"recipe":{
+		"name":"tacos",
+		"description":"A yummy Mexican dish",
+		"instructions":"Cook the tacos, they're good.",
+		"ingredientIDs":[
+			50,
+			34,
+			12
+		]
+	}
 }
 
 POST Request

@@ -36,29 +36,9 @@ app.post('/recipeSearch', function(req,res){
 		inputQuery += "\'" + req.body.searchIDs[i] + "\'";
 		if (i != Object.keys(req.body.searchIDs) - 1) inputQuery += ",";
 	}
-	var sql ="SELECT " +
-    "Recipe.name AS \'Recipe\', " +
-    "COUNT(Ingredient.name) AS \'Ingredients Used\', "+
-    "\`Total Ingredients\` - COUNT(Ingredient.name) AS \'Ingredients Needed\' "+
-"FROM "+
-    "Recipe "+
-        "JOIN  "+
-    "RecipeIngredient ON Recipe.id = RecipeIngredient.recipe_id "+
-        "JOIN "+
-    "Ingredient ON Ingredient.id = RecipeIngredient.ingredient_id "+
-        "JOIN "+
-    "(SELECT "+
-        "(RecipeIngredient.recipe_id), "+
-        "COUNT(RecipeIngredient.ingredient_id) AS \'Total Ingredients\' "+
-    "FROM "+
-        "ingredient "+
-    "JOIN recipeingredient ON RecipeIngredient.ingredient_id = ingredient.id "+
-    "GROUP BY recipeingredient.recipe_id "+
-    "ORDER BY recipeingredient.recipe_id ASC) AS SUB_SELECT USING (recipe_id) "+
-"WHERE "+
-    "Ingredient.id IN (" + inputQuery + ") "+
-"GROUP BY Recipe.name " +
-"ORDER BY COUNT(Ingredient.name) DESC , Recipe.name ASC"
+
+var sql = "SELECT Recipe.name AS 'Recipe', COUNT(Ingredient.name) AS 'Ingredients Used', 'Total Ingredients' - COUNT(Ingredient.name) AS 'Ingredients Needed' FROM Recipe JOIN RecipeIngredient ON Recipe.id = RecipeIngredient.recipe_id JOIN Ingredient ON Ingredient.id = RecipeIngredient.ingredient_id JOIN (SELECT (RecipeIngredient.recipe_id), COUNT(RecipeIngredient.ingredient_id) AS 'Total Ingredients'    FROM ingredient JOIN recipeingredient ON RecipeIngredient.ingredient_id = ingredient.id GROUP BY recipeingredient.recipe_id ORDER BY recipeingredient.recipe_id ASC) AS SUB_SELECT USING (recipe_id)WHERE Ingredient.id IN (  "+inputQuery+"  )GROUP BY Recipe.name ORDER BY COUNT(Ingredient.name) DESC , Recipe.name ASC";
+
 	con.query(sql,
 		function(err, rows, fields)	{
 			if (err)
@@ -162,7 +142,7 @@ app.get('/FindRecipeByID', function(req, res){
 
 app.listen(8080, function(){
 portNumber = 8080;
-if (config.port != 8080){
+if (config.port != undefined){
 	portNumber = config.port;
 }
 app.listen(portNumber, function(){

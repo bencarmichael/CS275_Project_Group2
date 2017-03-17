@@ -71,7 +71,7 @@ app.post('/recipeSearch', function(req,res){
 
 app.get('/ingredientSearch', function(req,res){
 	var ingredient = req.query.ingredientSearch.searchString;
-	var sql = "SELECT * FROM ingredient WHERE name LIKE \'%" + ingredient + "%\'";
+	var sql = "SELECT * FROM ingredient WHERE name LIKE '%" + ingredient + "%'";
 	con.query(sql,
 		function(err, rows, fields)	{
 			if (err)
@@ -160,14 +160,11 @@ app.get('/FindRecipeByID', function(req, res){
 		});
 });
 
-<<<<<<< HEAD
 app.listen(8080, function(){
-=======
 portNumber = 8080;
 if (config.port != 8080){
 	portNumber = config.port;
 }
 app.listen(portNumber, function(){
->>>>>>> b89e83688eccaa79960a712256403c87c15b68c9
 	console.log('Server Running. . .')
 });

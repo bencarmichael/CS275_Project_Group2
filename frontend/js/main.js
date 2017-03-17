@@ -7,6 +7,7 @@ var ingredient_search_result;
 var picked_ingredients;
 var new_ingredient;
 var new_ingredient_error;
+var recipe_result;
 
 $(document).ready(function(){
     //Find the elements
@@ -15,6 +16,7 @@ $(document).ready(function(){
     picked_ingredients = $("#picked-ingredients");
     new_ingredient = $("#new-ingredient");
     new_ingredient_error = $("#new-ingredient-error");
+    recipe_result = $("#recipe-result");
 
     //Add event handler Note: .on is for generated elements
     ingredient_search_result.on("click",".searched-ingredient",ingredient_clicked);
@@ -87,13 +89,13 @@ function look_up_recipe(){
                     var number_of_matched = 0;
                     var ingredients  = {};
                     for(var id_res in data.recipeResults[key].ingredientIDs){
+                        ingredients[id_res].name = data.recipeResults[key].ingredientIDs[id_res];
+                        ingredients[id_res].match = false;
                         for(var id_org in search_ids){
                             if(id_res == id_org){
                                 number_of_matched++;
-                                ingredients[id_res] = true;
-                            }else{
-                                ingredients[id_res] = false;
-                            }
+                                ingredients[id_res].match =true;
+                            }                        
                         }
                     }
                     recipe.ingredients = ingredients;
@@ -114,7 +116,27 @@ function look_up_recipe(){
             });
             //Now output them.
             for(var recipe in recipes){
-
+                var ingredient_str = "";
+                for(var ingredient in recipe.ingredients){
+                    if(ingredients[ingredient].match){
+                        ingredient_str = ingredient_str + '\
+                            <span server-id="'+ingredient+'" class="label label-success padding-right">"'+recipe.ingredients[ingredient].name+'"</span>
+                            '
+                    }else{
+                        ingredient_str = ingredient_str + '\
+                            <span server-id="'+ingredient+'" class="label label-warning padding-right">"'+recipe.ingredients[ingredient].name+'"</span>
+                            '
+                    }
+                }
+                recipe_result.append(
+                    '\
+                    <div id="'+recipe.name+'" server-id="'+recipe.server_id+'" description="''"class="panel panel-default">\
+                        <div class="panel-heading"><a href="#" class="panel-title">'+recipe.name+'<span class="badge pull-right">'+recipe.completeness+'%</span></a></div>\
+                        <div class="panel-body">' + ingredient_str '\
+                        </div>\
+                    </div>
+                    '
+                );
             }
         }
     });

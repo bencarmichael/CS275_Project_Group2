@@ -134,7 +134,7 @@ function look_up_recipe(){
                         <div class="panel-heading"><a href="#" class="panel-title">'+recipe.name+'<span class="badge pull-right">'+recipe.completeness+'%</span></a></div>\
                         <div class="panel-body">' + ingredient_str '\
                         </div>\
-                    </div>
+                    </div>\
                     '
                 );
             }

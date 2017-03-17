@@ -120,11 +120,11 @@ function look_up_recipe(){
                 for(var ingredient in recipe.ingredients){
                     if(ingredients[ingredient].match){
                         ingredient_str = ingredient_str + '\
-                            <span server-id="'+ingredient+'" class="label label-success padding-right">"'+recipe.ingredients[ingredient].name+'"</span>
+                            <span server-id="'+ingredient+'" class="label label-success padding-right">"'+recipe.ingredients[ingredient].name+'"</span>\
                             '
                     }else{
                         ingredient_str = ingredient_str + '\
-                            <span server-id="'+ingredient+'" class="label label-warning padding-right">"'+recipe.ingredients[ingredient].name+'"</span>
+                            <span server-id="'+ingredient+'" class="label label-warning padding-right">"'+recipe.ingredients[ingredient].name+'"</span>\
                             '
                     }
                 }

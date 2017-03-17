@@ -6,7 +6,9 @@ var con = mysql.createConnection({
 	user: 'root',
 	password:	'8907',
 	database:	'PROJECT'
+
 });
+
 
 con.connect(function(err)	{
 	if (err)	{
@@ -53,12 +55,12 @@ ORDER BY COUNT(Ingredient.name) DESC , Recipe.name ASC',
 
 app.get('/searchIngredient', function(req,res){
 	var n = parseInt(req.query.input);
-	con.query('SELECT id from ingredient WHERE ingredient.name= ${n}',
-		function(err, rows, fields)	{
+	con.query('SELECT * from ingredient WHERE ingredient.name= ${n}',
+		function(err, rows)	{
 			if (err)
 				console.log('Error during query processing');
 			else
-				console.log('id is  ', rows);
+				console.log(rows);
 				res.send(rows);
 		});
 });
@@ -66,3 +68,7 @@ app.get('/searchIngredient', function(req,res){
 app.listen(8080, function(){
 	console.log('Server Running. . .')
 });
+
+
+
+

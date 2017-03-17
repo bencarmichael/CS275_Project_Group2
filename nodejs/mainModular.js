@@ -10,7 +10,7 @@ app.use(bodyparser.json());
 var con = mysql.createConnection({
 	host:	'localhost',
 	user: 'root',
-	password:	'8907',
+	password:	'password',
 	database:	'cookbook'
 });
 
@@ -127,5 +127,5 @@ app.get('/FindIngredientByID', function(req, res){
 		});
 });
 app.listen(8080, function(){
-	console.log('Server Running. . .')
+	console.log('Server Running port: 8080. . .')
 });

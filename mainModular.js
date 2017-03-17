@@ -114,19 +114,28 @@ app.post('/recipeSubmission', function(req,res){
 	res.send("200");
 });
 
+/*
+ * Endpoint: FindIngredientByID?id="2"
+ * Response: {"name": "salt"}
+ */
 app.get('/FindIngredientByID', function(req, res){
 	var ID = req.param("id");
-	var sql = "SELECT id FROM ingredient WHERE id =" + ID;
+	var sql = "SELECT name FROM ingredient WHERE id =" + ID;
 	con.query(sql,
 		function(err, rows, fields)	{
-			if (err)
+			if (err){
 				console.log('Error during query processing');
-			else
-				console.log('Rows is  ', rows);
-				if (Object.keys(rows).length == 0)
-				{
-					res.send("404");
-				}
+                            return;
+                        }
+                    if (Object.keys(rows).length == 0)
+                    {
+                        res.status("404");
+                        res.send("Can't find ingredient for the id " + ID);
+                        return;
+                    }
+                    console.log(rows);
+                    res.send(rows[0]);
+                    return;
 		});
 
 });

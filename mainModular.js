@@ -135,6 +135,11 @@ app.get('/FindIngredientByID', function(req, res){
 		});
 
 });
-app.listen(8080, function(){
+
+portNumber = 8080;
+if (config.port != 8080){
+	portNumber = config.port;
+}
+app.listen(portNumber, function(){
 	console.log('Server Running. . .')
 });

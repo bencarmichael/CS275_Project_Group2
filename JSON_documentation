@@ -1,16 +1,16 @@
 POST Request
---SearchRecipe Request JSON
+--recipeSearch Request JSON
 {
 	"recipeSearch":{
 		"searchIDs":[
 			4,
 			22,
 			14
-		] 
+		]
 	}
 }
 
---SearchRecipe Response JSON
+--recipeSearch Response JSON
 {
 	"recipeResults":[
 		“12”:{
@@ -23,7 +23,7 @@ POST Request
 				12
 			]
 		},
-                       “20”:{
+		“20”:{
 			"name":"burgers",
 			"description":"An American classic",
 			"instructions":"Cook the burgers, yum.",
@@ -36,7 +36,7 @@ POST Request
 }
 
 POST Request
---SubmitRecipe Request JSON
+--recipeSubmission Request JSON
 {
 	"recipeSubmission":{
 		"name":"Cheeseburger",
@@ -49,7 +49,7 @@ POST Request
 	}
 }
 
---SubmitRecipe Response JSON
+--resipeSubmission Response JSON
 {
 	"recipeSubmissionResponse":{
 		"status":"success",
@@ -59,10 +59,10 @@ POST Request
 }
 
 GET Request
---SearchIngredient Request URL
-/SearchIngredient?search="rice"
+--ingredientSearch Request URL
+/ingredientSearch?search="rice"
 
---SearchIngredient Response JSON
+--ingredientSearch Response JSON
 {
 	"ingredientResults":[
 		"9":"White Rice",
@@ -72,14 +72,14 @@ GET Request
 }
 
 POST Request
---SubmitIngredient Request JSON
+--ingredientSubmission Request JSON
 {
 	"ingredientSubmission":{
 		"name":"Mozzarella Cheese"
 	}
 }
 
---SubmitIngredient Response JSON
+--ingredientSubmission Response JSON
 {
 	"ingredientSubmissionResponse":{
 		"status":"success"

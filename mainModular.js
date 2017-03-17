@@ -114,6 +114,10 @@ app.post('/recipeSubmission', function(req,res){
 	res.send("200");
 });
 
+/*
+ * Endpoint: FindIngredientByID?id="2"
+ * Response: {"name": "salt"}
+ */
 app.get('/FindIngredientByID', function(req, res){
 	var ID = req.param("id");
 	var sql = "SELECT name FROM ingredient WHERE id =" + ID;

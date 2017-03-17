@@ -1,3 +1,4 @@
+POST Request
 --SearchRecipe Request JSON
 {
 	"recipeSearch":{
@@ -8,7 +9,6 @@
 		] 
 	}
 }
-
 
 --SearchRecipe Response JSON
 {
@@ -35,6 +35,7 @@
 	]
 }
 
+POST Request
 --SubmitRecipe Request JSON
 {
 	"recipeSubmission":{
@@ -57,12 +58,9 @@
 	}
 }
 
---SearchIngredient Request JSON
-{
-	"ingredientSearch":{
-		"searchString":"rice"
-	}
-}
+GET Request
+--SearchIngredient Request URL
+/SearchIngredient?search="rice"
 
 --SearchIngredient Response JSON
 {
@@ -73,6 +71,7 @@
 	]
 }
 
+POST Request
 --SubmitIngredient Request JSON
 {
 	"ingredientSubmission":{

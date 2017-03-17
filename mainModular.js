@@ -55,7 +55,7 @@ var sql = "SELECT Recipe.name AS 'Recipe', COUNT(Ingredient.name) AS 'Ingredient
  */
 app.get('/ingredientSearch', function(req,res){
 	var ingredient = req.query.ingredientSearch.searchString;
-	var sql = "SELECT * FROM ingredient WHERE name LIKE \'%" + ingredient + "%\'";
+	var sql = "SELECT * FROM ingredient WHERE name LIKE '%" + ingredient + "%'";
 	con.query(sql,
 		function(err, rows, fields)	{
 			if (err)

@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <title>Search Page</title> 
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <style>
+.margin-right{
+    margin-right: 5px;
+}
+.padding-right{
+    padding-right: 5px;
+}
+.padding-left{
+    padding-left: 5px;
+}
+.padding-bottom{
+    padding-bottom: 5px;
+}
+.padding-bottom-sm{
+    padding-top: 2px;
+}
+.padding-top{
+    padding-top: 5px;
+}
+.padding-top-sm{
+    padding-top: 2px;
+}
+.btn-look:hover{
+    color: #333 ;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+.btn-look:active{
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px rgba(0,0,0,.125);
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 col-sm-12">
+                    <h1>Recipe Finder</h1>
+                    <div class="form-group has-feedback">
+                        <input id="search-form" type="text" class="form-control " placeholder="search for ingredients">
+                        <span class="form-control-feedback glyphicon glyphicon-search"></span>
+                        <div id="picked-ingredients"class="padding-top padding-bottom margin-right">
+                        </div>
+                    <ul class="list-group padding-top">
+                        <span id="ingredient-search-result"></span>
+                    </ul>
+                    <button class="btn btn-primary hidden"><span id="new-ingredient"></span> <span id="new-ingredient-error" class="label label-danger hidden">Ingredient Already Exists</span> <span class="glyphicon glyphicon-pencil"></span></li>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                </div>
+                <div id="recipe-result" class="col-md-6 col-sm-12">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 col-sm-12">
+                    <button class="btn btn-primary">Add New Recipe <span class="glyphicon glyphicon glyphicon-chevron-right"></span></button>
+                </div>
+            </div>
+        </div>
+        <!-- Recipe details Modal -->
+        <div id="recipe-modal" class="modal hide fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><span id="modal-recipe-tile"></span></h4>
+                    </div>
+                    <div  class="modal-body">
+                        <div id="modal-recipe-description"></div>
+                        <div id="modal-recipe-instruction"></div>
+                    </div>
+                    <div classs="modal-footer">
+                        <button class="btn btn-default"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="./js/jquery-3.1.1.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+        <script src="./js/main.js"></script>
+
+    </body>
+</html>

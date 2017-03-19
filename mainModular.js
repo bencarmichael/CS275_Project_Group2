@@ -8,6 +8,7 @@ var fs = require('fs')
 var bodyparser = require("body-parser");
 var mysql = require("mysql");
 var string_similarity = require('string-similarity');
+var quill_render = require('quill-render');
 
 /*<=============>
  * Express setup
@@ -246,6 +247,7 @@ app.post('/ingredients', function(req,res){
 
 app.post('/recipes', function(req,res){
     // Assuming IDs are correct 
+    console.log(req.body);
     var name = req.body.recipeSubmission.name;
     var desc = req.body.recipeSubmission.description;
     var instr = req.body.recipeSubmission.instructions;
@@ -324,7 +326,7 @@ app.get('/ingredients', function(req, res){
  */
 app.get('/recipes', function(req, res){
     var ID = req.param("id");
-    var sql = "SELECT id, name FROM recipe WHERE id =" + mysql.escape(ID);
+    var sql = "SELECT id, name, FROM recipe WHERE id =" + mysql.escape(ID);
     if(ID == undefined){
         var name = req.param("name");
         if(namee == undefined){

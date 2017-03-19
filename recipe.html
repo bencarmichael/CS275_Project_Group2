@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <title>Search Page</title> 
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/monokai-sublime.min.css" />
+        <link rel="stylesheet" href="./css/quill.snow.css" />
+        <style>
+.margin-right{
+    margin-right: 5px;
+}
+.padding-right{
+    padding-right: 5px;
+}
+.padding-left{
+    padding-left: 5px;
+}
+.padding-bottom{
+    padding-bottom: 5px;
+}
+.padding-bottom-sm{
+    padding-top: 2px;
+}
+.padding-top{
+    padding-top: 5px;
+}
+.padding-top-sm{
+    padding-top: 2px;
+}
+.btn-look:hover{
+    color: #333 ;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+.quill-container{
+    margin:50px auto;
+    width: auto;
+}
+
+#instructions-quill{
+    height: 250px;
+}
+#description-quill{
+    height: 100px;
+}
+
+.btn-look:active{
+    outline: 0;
+    -webkit-box-shadow: inset 0 3px rgba(0,0,0,.125);
+    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+}
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 col-sm-12">
+                    <h1>New Recipe <span class="glyphicon glyphicon-pencil"></span></h1>
+                        <form>
+                            <div class="form-group">
+                                <label for="recipe-tilte-input">Title</label>
+                                <input type="text" name="title" class="form-control" id="recipe-title-input" placeholder="Apple Pie">
+                            </div>
+                            <div class="form-group quill-container">
+                                <input name="description" type="hidden">
+                                <label for="description-quill">Description</label>
+                                <div id="description-quill"></div>
+                            </div>
+                            <div class="form-group quill-container">
+                                <label for="instructions-quill">Instructions</label>
+                                <input name="instructions" type="hidden">
+                                <div id="instructions-quill"></div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label for="search-form">Ingredients</label>
+                                <input id="search-form" type="text" class="form-control " placeholder="apples...">
+                                <span class="form-control-feedback glyphicon glyphicon-search"></span>
+                                <div id="picked-ingredients"class="padding-top padding-bottom margin-right">
+                                </div>
+                                <ul class="list-group padding-top">
+                                    <span id="ingredient-search-result"></span>
+                                </ul>
+                                <button class="btn btn-primary hidden"><span id="new-ingredient"></span> <span id="new-ingredient-error" class="label label-danger hidden">Ingredient Already Exists</span> <span class="glyphicon glyphicon-pencil"></span></li>
+                            </div>
+                            <button class="btn btn-primary" type=sumbit>Save <span class="glyphicon glyphicon-floppy-disk"></span></button>
+                        </form>
+                </div>
+            </div>
+        </div>
+        <script src="./js/jquery-3.1.1.min.js"></script>
+        <script src="./js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+        <script type="text/javascript" src="./js/quill.min.js"></script>
+        <script src="./js/shared.js"></script>
+        <script src="./js/recipe.js"></script>
+    </body>
+</html>

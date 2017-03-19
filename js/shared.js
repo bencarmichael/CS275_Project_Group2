@@ -7,7 +7,6 @@ function objectifyForm(formArray) {//serialize data function
   return returnArray;
 }
 
-
 function search(){
     new_ingredient_error.addClass("hidden");
     $.ajax({
@@ -32,17 +31,24 @@ function search(){
     });
 }
 
-function search_key_press(){
-    new_ingredient.html(search_form.val());
-    new_ingredient.parent().addClass("hidden");
-    if(can_search == false){
-        can_search = true;
-        search();
-        setTimeout(function(){can_search=false},SEARCH_TIMEOUT);
+function search_key_press(event){
+    if(event.originalEvent.code == "Enter"){
+        if(ingredient_search_result.children().length != 0){
+            ingredient_search_result.children().first().click();
+        }
+    }else{
+        new_ingredient.html(search_form.val());
+        new_ingredient.parent().addClass("hidden");
+        if(can_search == false){
+            can_search = true;
+            search();
+            setTimeout(function(){can_search=false},SEARCH_TIMEOUT);
+        }
     }
 }
 
 function ingredient_clicked(){
+    
     var ingredient = $(this);
     var server_id = ingredient.attr('server-id');
     var name = ingredient.attr('name');
@@ -50,12 +56,21 @@ function ingredient_clicked(){
     new_ingredient.html('');
     new_ingredient_error.addClass("hidden");
     new_ingredient.parent().addClass("hidden");
-    picked_ingredients.append(
-                   '\
+    var unique = true;
+    $(".picked-ingredient").each(function(){
+        if(server_id == $(this).attr("server-id")){
+            unique = false;
+        }
+    });
+    if(unique){
+        picked_ingredients.append(
+            '\
                         <span server-id="'+server_id+'" name="'+name+'"class="label label-default picked-ingredient">'+name+' <span class="glyphicon glyphicon-remove"></span></span>\
                     '
-);
-    look_up_recipe();
+        );
+        look_up_recipe();
+
+    }
 }
 
 function remove_ingredient(){
@@ -72,22 +87,18 @@ function add_ingredient(){
         type:"POST",
         data:{name:new_ingredient.html()},
         success: function(data,textStatus,jqXHR){
-            if(data.status == "success"){
-                var server_id = data.ingredientSubmissionResponse.id;
-                var name = data.ingredientSubmissionResponse.name;
+                var server_id = data.insertId;
+                var name = data.name;
                 picked_ingredients.append(
                     '\
                         <span server-id="'+server_id+'" name="'+name+'"class="label label-default picked-ingredient">'+name+' <span class="glyphicon glyphicon-remove"></span></span>\
                     '
                 );
                 look_up_recipe();
-            }else{
-                new_ingredient_error.removeClass("hidden");
-            }
-
         },
         error: function(jqXHR,textStatus,errorThrown){
             console.log('ERROR ADDING INGREDIENT : ' + errorThrown);
+            new_ingredient_error.removeClass("hidden");
         }
     });
 }

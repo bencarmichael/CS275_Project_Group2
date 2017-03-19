@@ -232,7 +232,6 @@ app.get('/ingredients/search', function(req,res){
 app.post('/ingredients', function(req,res){
     console.log(req.body);
     var ingredient = req.body.name;
-    console.log(ingredient);
     var sql = "INSERT INTO ingredient (name) VALUES (" + mysql.escape(ingredient) + ")";
     con.query(sql,
         function(err, rows, fields)	{
@@ -240,7 +239,8 @@ app.post('/ingredients', function(req,res){
                 handle_sql_error(err,sql,res);
                 return;
             }
-            res.send(rows);
+            rows.name = req.body.name;
+            res.send(rows)
             return;
         });
 });
@@ -248,18 +248,28 @@ app.post('/ingredients', function(req,res){
 app.post('/recipes', function(req,res){
     // Assuming IDs are correct 
     console.log(req.body);
-    var name = req.body.recipeSubmission.name;
-    var desc = req.body.recipeSubmission.description;
-    var instr = req.body.recipeSubmission.instructions;
+    var name = req.body.title;
+    var desc = quill_render(JSON.parse(req.body.description));
+    var instr = quill_render(JSON.parse(req.body.instructions));
     var ingredients = req.body.recipeSubmission.ingredients;
-    var sql = "INSERT INTO recipe (name) VALUES (\'" + mysql.escape(ingredient) + "\')";
+    var sql = "INSERT INTO recipe (name,description,instructions) VALUES (" + mysql.escape(name) + ","+mysql.escape(desc)+" "+mysql.escape(instr)+")";
     con.query(sql,
         function(err, rows, fields)	{
             if (err){
                 handle_sql_error(err,sql,res);
                 return;
             }
+            var id = insertId;
+            for(var i=0;i<ingredients;i++){
+                var sql2 = "INSERT INTO recipeingredient (recipe_id,ingredient_id) VALUES(" +id+ ","+ingredients[i]+")"
+                con.query(sql2,function(err,rows,fields){
+                    if(err){
+                        handle_sql_error(err,sql2,res);
+                    }
+                });
+            }
             res.send(rows);
+            res.redirect("/");
             return;
         });
 });

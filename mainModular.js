@@ -8,7 +8,6 @@ var fs = require('fs')
 var bodyparser = require("body-parser");
 var mysql = require("mysql");
 var string_similarity = require('string-similarity');
-var quill_render = require('quill-render');
 
 /*<=============>
  * Express setup
@@ -189,28 +188,8 @@ app.get('/ingredients/search', function(req,res){
     if(validate_query_string(str,res) == false){
         return;
     }
-    tokens = str.split(" ");
-    console.log(tokens);
-
-    var result = "";
-    if(tokens.length > 1){
-        for(var i=0;i<tokens.length;i++){
-            if(tokens[i].length > 1){
-                result = result + tokens[i] + "|";
-            }    }
-        result = result.substring(0,result.length-1);
-    }else if(tokens.length == 1){
-       result = tokens[0];
-    }
-    if(result.length == 0){
-        res.send([]);
-        return;
-    }
-
-    mysql.escape(result);
-
-
-    var sql = "SELECT * FROM ingredient WHERE name REGEXP '"+result+"'";
+    mysql.escape(str);
+    var sql = "SELECT * FROM ingredient WHERE name REGEXP '"+str+"'";
     console.log(sql);
     con.query(sql,
         function(err, rows, fields)	{
@@ -247,30 +226,32 @@ app.post('/ingredients', function(req,res){
 
 app.post('/recipes', function(req,res){
     // Assuming IDs are correct 
-    console.log(req.body);
     var name = req.body.title;
-    var desc = quill_render(JSON.parse(req.body.description));
-    var instr = quill_render(JSON.parse(req.body.instructions));
-    var ingredients = req.body.recipeSubmission.ingredients;
-    var sql = "INSERT INTO recipe (name,description,instructions) VALUES (" + mysql.escape(name) + ","+mysql.escape(desc)+" "+mysql.escape(instr)+")";
+    var desc = req.body.description;
+    var instr = req.body.instructions;
+    var ingredients = req.body['ingredients[]'];
+    console.log(ingredients);
+    var sql = "INSERT INTO recipe (name,description,instructions) VALUES (" + mysql.escape(name) + ","+mysql.escape(desc)+" , "+mysql.escape(instr)+")";
     con.query(sql,
         function(err, rows, fields)	{
             if (err){
                 handle_sql_error(err,sql,res);
                 return;
             }
-            var id = insertId;
-            for(var i=0;i<ingredients;i++){
-                var sql2 = "INSERT INTO recipeingredient (recipe_id,ingredient_id) VALUES(" +id+ ","+ingredients[i]+")"
-                con.query(sql2,function(err,rows,fields){
-                    if(err){
-                        handle_sql_error(err,sql2,res);
-                    }
-                });
+            var id = rows.insertId;
+            var sql2 ="INSERT INTO recipeingredient (recipe_id,ingredient_id) VALUES";
+            for(var i=0;i<ingredients.length;i++){
+                sql2 = sql2 + "(" + id+ ","+mysql.escape(ingredients[i])+"),"
             }
-            res.send(rows);
-            res.redirect("/");
-            return;
+            sql2 = sql2.substring(0,sql2.length-1);
+            con.query(sql2,function(err,rows,fields){
+                if(err){
+                    handle_sql_error(err,sql2,res);
+                    return;
+                }
+                res.send(rows);
+                return;
+            });
         });
 });
 
@@ -336,16 +317,16 @@ app.get('/ingredients', function(req, res){
  */
 app.get('/recipes', function(req, res){
     var ID = req.param("id");
-    var sql = "SELECT id, name, FROM recipe WHERE id =" + mysql.escape(ID);
+    var sql = "SELECT * FROM recipe WHERE id =" +mysql.escape(ID);
     if(ID == undefined){
         var name = req.param("name");
         if(namee == undefined){
-            sql = "SELECT id, name FROM recipe";
+            sql = "SELECT * FROM recipe";
             if(validate_query_string(name,res) == false){
                 return;
             }
         }else{
-            sql = "SELECT id, name FROM recipe WHERE name =" + mysql.escape(name);
+            sql = "SELECT * FROM recipe WHERE name =" + mysql.escape(name);
         }
     }else{
         if(validate_query_number(ID,res) == false){

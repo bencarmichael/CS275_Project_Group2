@@ -20,7 +20,7 @@ function search(){
             if(data.length == 0){
                 add_new.removeClass("hidden");
                 search_current.addClass("hidden");
-                new_ingredient_mode = true;
+                new_ingredient = true;
                 return;
             }
             for(var i=0;i<data.length;i++){
@@ -39,10 +39,10 @@ function search_key_press(event){
     if(ingredient_search_result.children().length != 0 && search_form.val().length != 0){
         add_new.addClass("hidden");
         search_current.removeClass("hidden");
-        new_ingredient_mode = false; 
+        new_ingredient = false; 
     }
     if(event.originalEvent.code == "Enter"){
-        if(new_ingredient_mode){
+        if(new_ingredient){
             add_ingredient();
         }else{
             if(ingredient_search_result.children().length != 0){
@@ -53,6 +53,7 @@ function search_key_press(event){
         if(ingredient_search_result.children().length == 0){
             search_result_loader.removeClass("hidden");
         }
+        new_ingredient.html(search_form.val());
         if(can_search == false){
             can_search = true;
             setTimeout(function(){can_search=false;search()},SEARCH_TIMEOUT);
@@ -66,6 +67,7 @@ function ingredient_clicked(){
     var server_id = ingredient.attr('server-id');
     var name = ingredient.attr('name');
     search_form.val('');
+    new_ingredient.html('');
     var unique = true;
     $(".picked-ingredient").each(function(){
         if(server_id == $(this).attr("server-id")){
@@ -91,12 +93,13 @@ function remove_ingredient(){
      
 
 function add_ingredient(){
+    new_ingredient.parent().addClass("hidden");
+    search_form.val('');
     $.ajax({
         url:SUBMIT_INGREDIENT_URL,
         type:"POST",
-        data:{name:search_form.val().trim()},
+        data:{name:new_ingredient.html().trim()},
         success: function(data,textStatus,jqXHR){
-                search_form.val('');
                 var server_id = data.insertId;
                 var name = data.name;
                 picked_ingredients.append(

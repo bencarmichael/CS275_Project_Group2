@@ -1,71 +1,33 @@
 <html>
     <head>
-        <title>Search Page</title> 
+        <title>Cookbook</title> 
         <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/monokai-sublime.min.css" />
-        <link rel="stylesheet" href="./css/quill.snow.css" />
+        <link rel="stylesheet" href="./css/font-awesome.min.css">
+        <link rel="stylesheet" href="./css/style.css">
         <style>
-.margin-right{
-    margin-right: 5px;
-}
-.padding-right{
-    padding-right: 5px;
-}
-.padding-left{
-    padding-left: 5px;
-}
-.padding-bottom{
-    padding-bottom: 5px;
-}
-.padding-bottom-sm{
-    padding-top: 2px;
-}
-.padding-top{
-    padding-top: 5px;
-}
-.padding-top-sm{
-    padding-top: 2px;
-}
-.btn-look:hover{
-    color: #333 ;
-    background-color: #e6e6e6;
-    border-color: #adadad;
-}
-.quill-container{
-    margin:50px auto;
-    width: auto;
-}
-
-#instructions-quill{
-    height: 250px;
-}
-#description-quill{
-    height: 100px;
-}
-
-.btn-look:active{
-    outline: 0;
-    -webkit-box-shadow: inset 0 3px rgba(0,0,0,.125);
-    box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+body{
+    position:absolute;
+    top:300px;
+    background-color:#6fd671;
 }
         </style>
     </head>
     <body>
-        <div class="container">
+        <div data-spy="affix" data-offset-top="300" class=" container container-table">
             <div class="row">
                 <div class="col-md-3"></div>
-                <div class="col-md-6 col-sm-12">
-                    <h1>Recipe Finder</h1>
+                <div class="col-md-6">
+                    <h1><i>Cookbook</i> <a href="./recipe.html" type="button" data-toggle="tooltip" data-placement="right" title="Add new recipe!"><i  class="fa fa-book" aria-hidden="true"></i></a></h1>
                     <div class="form-group has-feedback">
                         <input id="search-form" type="text" class="form-control " placeholder="search for ingredients">
-                        <span class="form-control-feedback glyphicon glyphicon-search"></span>
+                        <span id="search-current" class="form-control-feedback glyphicon glyphicon-search"></span><span id="add-new" class="hidden form-control-feedback glyphicon glyphicon-pencil"></span>
                         <div id="picked-ingredients"class="padding-top padding-bottom margin-right">
                         </div>
                     <ul class="list-group padding-top">
+<i id="search-result-loader" class="hidden fa fa-circle-o-notch fa-spin fa-3x fa-fw"></i>
+<span class="sr-only">Loading...</span>
                         <span id="ingredient-search-result"></span>
                     </ul>
-                    <button class="btn btn-primary hidden"><span id="new-ingredient"></span> <span id="new-ingredient-error" class="label label-danger hidden">Ingredient Already Exists</span> <span class="glyphicon glyphicon-pencil"></span></li>
                     </div>
                 </div>
             </div>
@@ -75,15 +37,9 @@
                 <div id="recipe-result" class="col-md-6 col-sm-12">
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6 col-sm-12">
-                    <a href="./recipe.html" id="recipe-add-button" class="btn btn-primary">Add New Recipe <span class="glyphicon glyphicon glyphicon-pencil"></span></a>
-                </div>
-            </div>
         </div>
         <!-- Recipe details Modal -->
-        <div id="recipe-modal" class="modal hide fade" tabindex="-1">
+        <div id="recipe-modal" class="modal fade" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -91,20 +47,14 @@
                         <h4 class="modal-title"><span id="modal-recipe-tile"></span></h4>
                     </div>
                     <div  class="modal-body">
-                        <div id="modal-recipe-description"></div>
-                        <div id="modal-recipe-instruction"></div>
-                    </div>
-                    <div classs="modal-footer">
-                        <button class="btn btn-default"></button>
+                        <p><span id="modal-recipe-description"></span></p>
+                        <p><span id="modal-recipe-instructions"></span></p>
                     </div>
                 </div>
             </div>
         </div>
         <script src="./js/jquery-3.1.1.min.js"></script>
         <script src="./js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.6.0/katex.min.js"></script>
-        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
-        <script type="text/javascript" src="./js/quill.min.js"></script>
         <script src="./js/shared.js"></script>
         <script src="./js/main.js"></script>
 

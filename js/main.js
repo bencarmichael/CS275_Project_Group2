@@ -1,33 +1,51 @@
 var can_search = false;
-var SEARCH_TIMEOUT = 100;
+var SEARCH_TIMEOUT = 300;
 var SEARCH_INGREDIENT_URL = "/ingredients/search";
 var SUBMIT_INGREDIENT_URL = "/ingredients";
 var SEARCH_RECIPE_URL = "/recipes/search";
 var FIND_INGREDIENT = "/ingredients";
+var FIND_RECIPE = "/recipes";
 var ingredient_search_result;
 var picked_ingredients;
-var new_ingredient;
 var new_ingredient_error;
 var recipe_result;
 var recipe_modal;
-var recipe_add_button;
-var recipe_add_modal;
+var modal_recipe_description;
+var modal_recipe_instructions;
+var modal_recipe_tile;
+
+var search_result_loader;
+var search_current;
+var add_new;
+var new_ingredient_mode = false;
+
 
 $(document).ready(function(){
     //Find the elements
     search_form = $("#search-form");
     ingredient_search_result = $("#ingredient-search-result");
     picked_ingredients = $("#picked-ingredients");
-    new_ingredient = $("#new-ingredient");
     new_ingredient_error = $("#new-ingredient-error");
     recipe_result = $("#recipe-result");
     recipe_modal = $("#recipe-modal");
+    search_result_loader = $("#search-result-loader")
+    search_current = $("#search-current");
+    add_new = $("#add-new");
+
+    modal_recipe_description = $("#modal-recipe-description");
+    modal_recipe_instructions = $("#modal-recipe-instructions");
+    modal_recipe_tile = $("#modal-recipe-tile");
 
     //Add event handler Note: .on is for generated elements
     ingredient_search_result.on("click",".searched-ingredient",ingredient_clicked);
     picked_ingredients.on("click",".picked-ingredient",remove_ingredient)
     search_form.keyup(search_key_press);
-    new_ingredient.parent().click(add_ingredient);
+    new_ingredient.parent().click();
+
+    //Toggle tooltip;
+    $("[data-toggle=tooltip]").tooltip({html:true});
+
+    recipe_result.on("click",".recipe-title",get_recipe_details);
 
 });
 
@@ -101,8 +119,8 @@ function look_up_recipe(){
                 console.log(ingredient_str);
                 recipe_result.append(
                     '\
-                    <div id="'+recipe.name+'" server-id="'+recipe.server_id+'" description="'+ recipe.description +'"class="panel panel-default">\
-                        <div class="panel-heading"><a href="#" class="panel-title">'+recipe.name+'<span class="badge pull-right">'+recipe.completeness+'%</span></a></div>\
+                    <div id="'+recipe.name+'"  description="'+ recipe.description +'"class="panel panel-default">\
+                        <div class="panel-heading"><a href="#" server-id="'+recipe.server_id+'" class="panel-title recipe-title"  >'+recipe.name+'<span class="badge pull-right">'+recipe.completeness+'%</span></a></div>\
                         <div class="panel-body">' + ingredient_str + '\
                         </div>\
                     </div>\
@@ -121,4 +139,21 @@ function look_up_recipe(){
             }
         }
     });
+}
+
+function get_recipe_details(){
+    var id = $(this).attr("server-id");
+    $.ajax({
+        url:FIND_RECIPE,
+        data:{id:id.toString()},
+        success:function(data){
+
+            modal_recipe_tile.html(data.name);
+            modal_recipe_description.html(data.description);
+            modal_recipe_instructions.html(data.instructions);
+            recipe_modal.modal("show");
+        },
+
+
+    })
 }

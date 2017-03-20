@@ -28,6 +28,7 @@ function search(){
                     '<li server-id="'+ data[i].id+'" name="'+ data[i].name + '"class="list-group-item btn-look searched-ingredient">' + data[i].name + '</li>'
                 );
             }
+            ingredient_search_result.append('<li class="list-group-item btn-look" onClick="add_ingredient()">'+search_form.val()+' <span class="glyphicon glyphicon-pencil"></span></li>');
         },
         error: function(jqXHR,textStatus,errorThrown){
             console.log('ERROR SEARCHING INGREDIENT : ' + errorThrown);
@@ -36,6 +37,8 @@ function search(){
 }
 
 function search_key_press(event){
+    search_form.parent().find(".help-block").remove();
+    search_form.parent().removeClass("has-error");
     if(ingredient_search_result.children().length != 0 && search_form.val().length != 0){
         add_new.addClass("hidden");
         search_current.removeClass("hidden");
@@ -109,7 +112,8 @@ function add_ingredient(){
         },
         error: function(jqXHR,textStatus,errorThrown){
             console.log('ERROR ADDING INGREDIENT : ' + errorThrown);
-            new_ingredient_error.removeClass("hidden");
+            search_form.parent().addClass("has-error");
+            search_form.parent().append('<span class="help-block">Ingredient already exists</span>')
         }
     });
 }

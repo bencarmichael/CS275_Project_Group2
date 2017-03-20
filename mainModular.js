@@ -188,6 +188,10 @@ app.get('/ingredients/search', function(req,res){
     if(validate_query_string(str,res) == false){
         return;
     }
+    if(str.length == 0){
+        res.send([]);
+        return;
+    }
     mysql.escape(str);
     var sql = "SELECT * FROM ingredient WHERE name REGEXP '"+str+"'";
     console.log(sql);

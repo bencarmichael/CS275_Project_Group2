@@ -34,6 +34,20 @@ $(document).ready(function(){
     search_current = $("#search-current");
     add_new = $("#add-new");
 
+    recipe_title_input.keyup(function(){
+            recipe_title_input.parent().removeClass("has-error");
+            recipe_title_input.parent().find('help-block').remove();
+    });
+    description_textarea.keyup(function(){
+            description_textarea.parent().removeClass("has-error");
+            description_textarea.parent().find('help-block').remove();
+    });
+    instruction_textarea.keyup(function(){
+        instruction_textarea.parent().removeClass("has-error");
+        instruction_textarea.parent().find('help-block').remove();
+    });
+
+
     //Add event handler Note: .on is for generated elements
     ingredient_search_result.on("click",".searched-ingredient",ingredient_clicked);
     picked_ingredients.on("click",".picked-ingredient",remove_ingredient)
@@ -47,22 +61,35 @@ function look_up_recipe(){}
 function submit_recipe(){
         var recipe = {}
         recipe.title =  recipe_title_input.val().trim();
+        var correct = true;
         if(recipe.title == ""){
             recipe_title_input.parent().addClass("has-error");
+            recipe_title_input.parent().append('<span class="help-block">Please provide a title.</span>');
+            correct = false;
         }
         recipe.description = description_textarea.val().trim();
         if(recipe.description == ""){
             description_textarea.parent().addClass("has-error");
+            description_textarea.parent().append('<span class="help-block">Please provide a description.</span>');
+            correct = false;
         }
         recipe.instructions = instruction_textarea.val().trim();
         if(recipe.instructions == ""){
             instruction_textarea.parent().addClass("has-error");
+            instruction_textarea.parent().append('<span class="help-block">Please provide a instructions.</span>');
+            correct = false;
         }
         recipe.ingredients = [];
         $(".picked-ingredient").each(function(){
             recipe.ingredients.push($(this).attr("server-id"));
         });
-        console.log(recipe);
+        if(recipe.ingredients.length == 0){
+            search_form.parent().addClass("has-error");
+            search_form.parent().append('<span class="help-block">Please provide ingredients.</span>');
+        }
+        if(correct == false){
+            return;
+        }
         $.ajax({
             url:SUBMIT_RECIPE_URL,
             data:recipe,

@@ -40,7 +40,6 @@ $(document).ready(function(){
     ingredient_search_result.on("click",".searched-ingredient",ingredient_clicked);
     picked_ingredients.on("click",".picked-ingredient",remove_ingredient)
     search_form.keyup(search_key_press);
-    new_ingredient.parent().click();
 
     //Toggle tooltip;
     $("[data-toggle=tooltip]").tooltip({html:true});

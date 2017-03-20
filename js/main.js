@@ -45,7 +45,6 @@ $(document).ready(function(){
     //Toggle tooltip;
     $("[data-toggle=tooltip]").tooltip({html:true});
 
-    recipe_result.on("click",".recipe-title",get_recipe_details);
 
 });
 
@@ -120,7 +119,7 @@ function look_up_recipe(){
                 recipe_result.append(
                     '\
                     <div id="'+recipe.name+'"  description="'+ recipe.description +'"class="panel panel-default">\
-                        <div class="panel-heading"><a href="#" server-id="'+recipe.server_id+'" class="panel-title recipe-title"  >'+recipe.name+'<span class="badge pull-right">'+recipe.completeness+'%</span></a></div>\
+                        <div class="panel-heading"><a href="#" onClick="get_recipe_details(this)" server-id="'+recipe.server_id+'" class="panel-title recipe-title" data-toggle="modal" data-target="#recipe-modal">'+recipe.name+'<span class="badge pull-right">'+recipe.completeness+'%</span></a></div>\
                         <div class="panel-body">' + ingredient_str + '\
                         </div>\
                     </div>\
@@ -141,8 +140,8 @@ function look_up_recipe(){
     });
 }
 
-function get_recipe_details(){
-    var id = $(this).attr("server-id");
+function get_recipe_details(elm){
+    var id = $(elm).attr("server-id");
     $.ajax({
         url:FIND_RECIPE,
         data:{id:id.toString()},

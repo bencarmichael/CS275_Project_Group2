@@ -137,7 +137,7 @@ app.get('/recipes/search', function(req,res){
     }
     inputQuery = inputQuery.substring(0,inputQuery.length-1);
 
-    var sql = "SELECT Recipe.name AS 'recipe', COUNT(Ingredient.name) AS 'used', 'Total Ingredients' - COUNT(Ingredient.name) AS 'needed' FROM Recipe JOIN RecipeIngredient ON Recipe.id = RecipeIngredient.recipe_id JOIN Ingredient ON Ingredient.id = RecipeIngredient.ingredient_id JOIN (SELECT (RecipeIngredient.recipe_id), COUNT(RecipeIngredient.ingredient_id) AS 'Total Ingredients'    FROM ingredient JOIN recipeingredient ON RecipeIngredient.ingredient_id = ingredient.id GROUP BY recipeingredient.recipe_id ORDER BY recipeingredient.recipe_id ASC) AS SUB_SELECT USING (recipe_id)WHERE Ingredient.id IN (  "+inputQuery+"  )GROUP BY Recipe.name ORDER BY COUNT(Ingredient.name) DESC , Recipe.name ASC";
+    var sql = "SELECT recipe.name AS 'recipe', COUNT(ingredient.name) AS 'used', `Total Ingredients` - COUNT(ingredient.name) AS 'needed' FROM recipe JOIN recipeingredient ON recipe.id = recipeingredient.recipe_id JOIN ingredient ON ingredient.id = recipeingredient.ingredient_id JOIN (SELECT (recipeingredient.recipe_id), COUNT(recipeingredient.ingredient_id) AS 'Total Ingredients'    FROM ingredient JOIN recipeingredient ON recipeingredient.ingredient_id = ingredient.id GROUP BY recipeingredient.recipe_id ORDER BY recipeingredient.recipe_id ASC) AS SUB_SELECT USING (recipe_id)WHERE ingredient.id IN (  "+inputQuery+"  )GROUP BY recipe.name ORDER BY COUNT(ingredient.name) DESC , recipe.name ASC";
 
     con.query(sql,
         function(err, rows, fields)	{

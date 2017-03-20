@@ -28,7 +28,7 @@ $(document).ready(function(){
     recipe_error = $("#recipe-error");
     submit = $(".submit");
     description_textarea = $("#description-textarea");
-    instruction_textarea = $("#instruction_textarea");
+    instruction_textarea = $("#instruction-textarea");
     recipe_title_input = $("#recipe-title-input");
     search_result_loader = $("#search-result-loader")
     search_current = $("#search-current");
@@ -62,6 +62,7 @@ function submit_recipe(){
         $(".picked-ingredient").each(function(){
             recipe.ingredients.push($(this).attr("server-id"));
         });
+        console.log(recipe);
         $.ajax({
             url:SUBMIT_RECIPE_URL,
             data:recipe,
